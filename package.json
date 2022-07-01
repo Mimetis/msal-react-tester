@@ -1,0 +1,45 @@
+{
+  "name": "msal-react-tester",
+  "version": "0.0.3",
+  "description": "A npm package to simplify testing react application using msal-react",
+  "author": {
+    "name": "Sébastien Pertus",
+    "email": "spertus@microsoft.com",
+    "url": "https://github.com/Mimetis"
+  },
+  "license": "MIT",
+  "repository": "Mimetis/msal-react-tester",
+  "main": "dist/index.js",
+  "engines": {
+    "node": ">=8",
+    "npm": ">=5"
+  },
+  "scripts": {
+    "build": "rollup -c",
+    "start": "rollup -c -w"
+  },
+  "peerDependencies": {
+    "@azure/msal-react": "^1.4.2",
+    "@testing-library/react": "^12.1.5"
+  },
+  "devDependencies": {
+    "@types/jest": "^26.0.24",
+    "@types/node": "^14.18.21",
+    "@types/react": "^17.0.47",
+    "@types/react-dom": "^17.0.17",
+    "babel-core": "^6.26.3",
+    "babel-runtime": "^6.26.0",
+    "rollup": "^1.29.0",
+    "rollup-plugin-sass": "^1.2.12",
+    "rollup-plugin-typescript2": "^0.32.1",
+    "typescript": "^4.7.4"
+  },
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "react",
+    "msal-react",
+    "@testing-library/react"
+  ]
+}

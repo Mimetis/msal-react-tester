@@ -1,0 +1,22 @@
+:root {
+  --header-height: 2.5rem;
+  --nav-width: 130px;
+  --min-nav-width: 60px;
+}
+.container-body {
+  position: absolute;
+  top: calc(0.5rem + var(--header-height));
+  height: calc(100% - var(--header-height) - 15px) !important;
+  width: calc(100% - 14px) !important;
+}
+
+iframe {
+  border: none;
+}
+
+@media screen and (min-width: 768px) {
+  .container-body {
+    height: calc(100% - var(--header-height) - 15px) !important;
+    width: calc(100% - 14px) !important;
+  }
+}
