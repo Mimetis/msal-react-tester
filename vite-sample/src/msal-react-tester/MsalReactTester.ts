@@ -1,6 +1,6 @@
 import { IPublicClientApplication, Logger, LogLevel, AccountInfo, EventCallbackFunction, AuthenticationResult, EventMessage, EventType, InteractionType, AuthError } from '@azure/msal-browser';
 import { act, fireEvent, waitFor } from '@testing-library/react';
-import GlobalOptions, { getTestRunner, ITestRunner } from './MsalReactTesterPlugin';
+import { getTestRunner, ITestRunner } from './MsalReactTesterPlugin';
 import { defaultTestAccountInfo, defaultTestAuthenticationResult, defaultTestAuthError, } from './testerConstants';
 /**
  * msal-react tester. Useful to tests your components requiring to be logged in, using msal-react
@@ -62,6 +62,11 @@ class MsalReactTester {
 
     this._testRunner = getTestRunner();
 
+    console.error(this._testRunner.spyOn);
+    if (this._testRunner.spyOn === undefined) {
+      
+      throw new Error('test runner seems to not be correctly configured');
+    }
     
     this._testAccountInfo = testAccountInfo;
     this._testAuthenticationResult = testAuthenticationResult;
