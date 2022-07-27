@@ -1,6 +1,6 @@
 {
   "name": "msal-react-tester",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "description": "A npm package to simplify testing react application using msal-react",
   "author": {
     "name": "Sébastien Pertus",
@@ -9,7 +9,7 @@
   },
   "license": "MIT",
   "repository": "Mimetis/msal-react-tester",
-  "main": "src/index.tsx",
+  "main": "dist/index.js",
   "engines": {
     "node": ">=8",
     "npm": ">=5"
