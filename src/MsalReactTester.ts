@@ -1,7 +1,7 @@
 import { IPublicClientApplication, Logger, LogLevel, AccountInfo, EventCallbackFunction, AuthenticationResult, EventMessage, EventType, InteractionType, AuthError } from '@azure/msal-browser';
 import { act, fireEvent, waitFor } from '@testing-library/react';
+import { MsalReactTesterPlugin, ITestRunner } from './MsalReactTesterPlugin';
 import { defaultTestAccountInfo, defaultTestAuthenticationResult, defaultTestAuthError, } from './testerConstants';
-
 /**
  * msal-react tester. Useful to tests your components requiring to be logged in, using msal-react
  * @example
@@ -37,13 +37,14 @@ import { defaultTestAccountInfo, defaultTestAuthenticationResult, defaultTestAut
 class MsalReactTester {
 
   private _eventCallbacks: EventCallbackFunction[] = [];
-  private _handleRedirectSpy: jest.SpyInstance;
-  private _loginRedirectSpy: jest.SpyInstance;
-  private _loginPopupSpy: jest.SpyInstance;
-  private _logoutRedirectSpy: jest.SpyInstance;
-  private _logoutPopupSpy: jest.SpyInstance;
+  private _handleRedirectSpy: any;
+  private _loginRedirectSpy: any;
+  private _loginPopupSpy: any;
+  private _logoutRedirectSpy: any;
+  private _logoutPopupSpy: any;
   private _testAccountInfo: AccountInfo;
   private _testAuthenticationResult: AuthenticationResult;
+  private _testRunner: ITestRunner
 
   client: IPublicClientApplication;
   accounts: AccountInfo[] = [];
@@ -59,6 +60,9 @@ class MsalReactTester {
     testAuthenticationResult = defaultTestAuthenticationResult,
     testAuthError = defaultTestAuthError) {
 
+    this._testRunner = MsalReactTesterPlugin.TestRunner;
+
+    
     this._testAccountInfo = testAccountInfo;
     this._testAuthenticationResult = testAuthenticationResult;
 
@@ -92,7 +96,7 @@ class MsalReactTester {
    * });
    */
   resetSpyMsal() {
-    jest.resetAllMocks();
+    this._testRunner.resetAllMocks();
     this.accounts = [];
     this.activeAccount = null;
     this._eventCallbacks = [];
@@ -102,30 +106,30 @@ class MsalReactTester {
    * Wait for login process to be done
    */
   async waitForLogin() {
-    await waitFor(() => expect(this._handleRedirectSpy).toHaveBeenCalledTimes(1));
+    await waitFor(() => this._testRunner.expect(this._handleRedirectSpy).toHaveBeenCalledTimes(1));
     if (this.interationType === 'Redirect')
-      await waitFor(() => expect(this._loginRedirectSpy).toHaveBeenCalledTimes(1));
+      await waitFor(() => this._testRunner.expect(this._loginRedirectSpy).toHaveBeenCalledTimes(1));
     else
-      await waitFor(() => expect(this._loginPopupSpy).toHaveBeenCalledTimes(1));
+      await waitFor(() => this._testRunner.expect(this._loginPopupSpy).toHaveBeenCalledTimes(1));
   }
 
   /**
    * Wait for redirect handled by MSAL to be done
    */
   async waitForRedirect() {
-    await waitFor(() => expect(this._handleRedirectSpy).toHaveBeenCalledTimes(1));
+    await waitFor(() => this._testRunner.expect(this._handleRedirectSpy).toHaveBeenCalledTimes(1));
   }
 
   /**
    * Wait for logout process to be done
    */
   async waitForLogout() {
-    await waitFor(() => expect(this._handleRedirectSpy).toHaveBeenCalledTimes(1));
+    await waitFor(() => this._testRunner.expect(this._handleRedirectSpy).toHaveBeenCalledTimes(1));
 
     if (this.interationType === 'Redirect')
-      await waitFor(() => expect(this._logoutRedirectSpy).toHaveBeenCalledTimes(1));
+      await waitFor(() => this._testRunner.expect(this._logoutRedirectSpy).toHaveBeenCalledTimes(1));
     else
-      await waitFor(() => expect(this._logoutPopupSpy).toHaveBeenCalledTimes(1));
+      await waitFor(() => this._testRunner.expect(this._logoutPopupSpy).toHaveBeenCalledTimes(1));
   }
 
   /**
@@ -143,14 +147,14 @@ class MsalReactTester {
   */
   spyMsal() {
     let eventId = 0;
-    jest.spyOn(this.client, 'addEventCallback').mockImplementation((callbackFn: any) => {
+    this._testRunner.spyOn(this.client, 'addEventCallback').mockImplementation((callbackFn: any) => {
       this._eventCallbacks.push(callbackFn);
       eventId += 1;
       return eventId.toString();
     });
 
     // send a message to say "hey we made redirect start then end"
-    this._handleRedirectSpy = jest.spyOn(this.client, 'handleRedirectPromise').mockImplementation(() => {
+    this._handleRedirectSpy = this._testRunner.spyOn(this.client, 'handleRedirectPromise').mockImplementation(() => {
 
       const eventStart: EventMessage = {
         eventType: EventType.HANDLE_REDIRECT_START,
@@ -181,7 +185,7 @@ class MsalReactTester {
       return Promise.resolve(null);
     });
 
-    this._loginRedirectSpy = jest.spyOn(this.client, 'loginRedirect').mockImplementation(async (request) => {
+    this._loginRedirectSpy = this._testRunner.spyOn(this.client, 'loginRedirect').mockImplementation(async (request) => {
 
       this.accounts = [this._testAccountInfo];
       this.activeAccount = this._testAccountInfo;
@@ -201,7 +205,7 @@ class MsalReactTester {
       return Promise.resolve();
     });
 
-    this._loginPopupSpy = jest.spyOn(this.client, "loginPopup").mockImplementation(async (request) => {
+    this._loginPopupSpy = this._testRunner.spyOn(this.client, "loginPopup").mockImplementation(async (request) => {
 
       this.accounts = [this._testAccountInfo];
       this.activeAccount = this._testAccountInfo;
@@ -221,7 +225,7 @@ class MsalReactTester {
       return Promise.resolve(this._testAuthenticationResult);
     });
 
-    this._logoutRedirectSpy = jest.spyOn(this.client, 'logoutRedirect').mockImplementation(async (request) => {
+    this._logoutRedirectSpy = this._testRunner.spyOn(this.client, 'logoutRedirect').mockImplementation(async (request) => {
       this.accounts = [];
       this.activeAccount = null;
 
@@ -241,7 +245,7 @@ class MsalReactTester {
 
     });
 
-    this._logoutPopupSpy = jest.spyOn(this.client, 'logoutPopup').mockImplementation(async (request) => {
+    this._logoutPopupSpy = this._testRunner.spyOn(this.client, 'logoutPopup').mockImplementation(async (request) => {
       this.accounts = [];
       this.activeAccount = null;
 
@@ -261,9 +265,9 @@ class MsalReactTester {
 
     });
 
-    jest.spyOn(this.client, 'getAllAccounts').mockImplementation(() => this.accounts);
-    jest.spyOn(this.client, 'getActiveAccount').mockImplementation(() => this.activeAccount);
-    jest.spyOn(this.client, 'setActiveAccount').mockImplementation((account) => (this.activeAccount = account));
+    this._testRunner.spyOn(this.client, 'getAllAccounts').mockImplementation(() => this.accounts);
+    this._testRunner.spyOn(this.client, 'getActiveAccount').mockImplementation(() => this.activeAccount);
+    this._testRunner.spyOn(this.client, 'setActiveAccount').mockImplementation((account) => (this.activeAccount = account));
   }
 
 
@@ -274,7 +278,7 @@ class MsalReactTester {
       if (this._loginRedirectSpy)
         this._loginRedirectSpy.mockClear();
 
-      this._loginRedirectSpy = jest.spyOn(this.client, 'loginRedirect').mockImplementation(async (request) => {
+      this._loginRedirectSpy = this._testRunner.spyOn(this.client, 'loginRedirect').mockImplementation(async (request) => {
 
         const eventMessage: EventMessage = {
           eventType: EventType.LOGIN_FAILURE,
@@ -296,7 +300,7 @@ class MsalReactTester {
       if (this._loginPopupSpy)
         this._loginPopupSpy.mockClear();
 
-      this._loginPopupSpy = jest.spyOn(this.client, "loginPopup").mockImplementation(async () => {
+      this._loginPopupSpy = this._testRunner.spyOn(this.client, "loginPopup").mockImplementation(async () => {
         const eventMessage: EventMessage = {
           eventType: EventType.LOGIN_FAILURE,
           interactionType: InteractionType.Popup,

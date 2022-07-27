@@ -4,6 +4,11 @@
 
 The [MSAL React Tester](https://www.npmjs.com/package/msal-react-tester) is a NPM package to allows you creating **unit tests** for any of your components that need to be authenticated (or not) using the `msal-react` package and [Azure AD](https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-overview).
 
+
+The **MSAL React Tester** package is able to run by default with different javascript test runners like:
+- [vitest](https://vitest.dev/) if you are creating a React application using [vite](https://vitejs.dev/).
+- [jest](https://jestjs.io/) if you are creating a React application using [Create React Application](https://create-react-app.dev/).
+
 The **MSAL React Tester** package allows you to test your components in any of these scenario:
 - Testing a react component when a user "**is not**" authenticated.
 - Testing a react component when a user "**is**" authenticated.
@@ -13,8 +18,8 @@ The **MSAL React Tester** package allows you to test your components in any of t
 
 ## Prerequisites
 
-* You are building a react application using [Create React Application](https://create-react-app.dev/).
-* You are using `@azure/msal-react` to authenticate your users on [Azure AD](https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-overview)
+* You are building a react application using [Create React Application](https://create-react-app.dev/) or [vite](https://vitejs.dev/).
+* You are using `@azure/msal-react` to authenticate your users on [Azure AD](https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-overview).
 * You are using the built in `@testing-library/react` package to create and run your tests (you are basically using the built in `"test": "react-scripts test"` script to execute your tests).
 * You want to create unit tests without having to depends on a connection to [Azure AD](https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-overview).
 * You want to run your tests in your **CI/CD**.
@@ -26,6 +31,23 @@ The **MSAL React Tester** package is available on [NPM](https://www.npmjs.com/).
 ``` bash
 npm install --save-dev msal-react-tester
 ```
+
+### vitest
+
+ If you are using the [vitest](https://vitest.dev/) test runner, you need to add this to your config 
+
+ ``` ts
+import { MsalReactTesterPlugin } from 'msal-react-tester'
+import { vi, expect } from 'vitest'
+
+MsalReactTesterPlugin.init({
+  spyOn: vi.spyOn,
+  expect: expect,
+  resetAllMocks: vi.resetAllMocks
+})
+```
+
+If you are using [jest](https://jestjs.io/) this step is not necessary.
 
 ## Usage
 
