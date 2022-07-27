@@ -1,5 +1,5 @@
 import { IPublicClientApplication, Logger, LogLevel, AccountInfo, EventCallbackFunction, AuthenticationResult, EventMessage, EventType, InteractionType, AuthError } from '@azure/msal-browser';
-import { act, fireEvent, waitFor } from '@testing-library/react';
+import { waitFor } from '@testing-library/react';
 import { MsalReactTesterPlugin, ITestRunner } from './MsalReactTesterPlugin';
 import { defaultTestAccountInfo, defaultTestAuthenticationResult, defaultTestAuthError, } from './testerConstants';
 /**
