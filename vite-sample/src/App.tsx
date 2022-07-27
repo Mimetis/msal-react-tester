@@ -1,11 +1,8 @@
-import { initializeIcons } from '@fluentui/react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Layout from './components/Layout';
 import HomePage from './pages/HomePage';
 import './App.css';
 import SearchPage from './pages/SearchPage';
-
-initializeIcons();
 
 function App() {
   return (
@@ -28,4 +25,4 @@ function App() {
   );
 }
 
-export default App
+export default App;

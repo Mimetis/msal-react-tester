@@ -1,20 +1,10 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client';
 import App from './App';
-import { mergeStyles } from '@fluentui/react';
-import reportWebVitals from './reportWebVitals';
 import { AuthenticationResult, EventMessage, EventType, PublicClientApplication } from '@azure/msal-browser';
 import { msalConfig } from './msalConfig';
 import { MsalProvider } from '@azure/msal-react';
-
-// Inject some global styles
-mergeStyles({
-  ':global(body,html,#root)': {
-    margin: 0,
-    padding: 0,
-    height: '100vh',
-  },
-});
+import './index.css';
 
 // Instantiate MSAL-Browser
 const pca = new PublicClientApplication(msalConfig);
@@ -33,8 +23,13 @@ pca.addEventCallback((event: EventMessage) => {
   }
 });
 
-ReactDOM.render(
-  <MsalProvider instance={pca}>
-    <App />
-  </MsalProvider>
-  , document.getElementById('root'));
+const root = ReactDOM.createRoot(
+  document.getElementById('root') as HTMLElement
+);
+root.render(
+  <React.StrictMode>
+    <MsalProvider instance={pca}>
+      <App />
+    </MsalProvider>
+  </React.StrictMode>
+);

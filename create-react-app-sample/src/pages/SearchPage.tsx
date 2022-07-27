@@ -1,6 +1,6 @@
 import { InteractionType } from '@azure/msal-browser';
 import { MsalAuthenticationTemplate } from '@azure/msal-react';
-import { Stack, Text } from '@fluentui/react';
+import { Box, Typography } from '@mui/material';
 import * as React from 'react';
 import { ErrorComponent } from '../components/ErrorComponent';
 import { LoadingComponent } from '../components/LoadingComponent';
@@ -9,7 +9,7 @@ import { apiRequest } from "../msalConfig";
 const SearchPage: React.FunctionComponent = (props) => {
 
   return (
-    <Stack tokens={{ childrenGap: 20, padding: 10 }}>
+    <Box>
 
       <MsalAuthenticationTemplate
         interactionType={InteractionType.Redirect}
@@ -17,19 +17,14 @@ const SearchPage: React.FunctionComponent = (props) => {
         errorComponent={ErrorComponent}
         loadingComponent={LoadingComponent}
       >
-        <Stack
-          tokens={{ childrenGap: 20, padding: 10 }}
-          horizontalAlign="center"
-          style={{
-            background: 'transparent',
-          }}
-        >
-          <Stack tokens={{ childrenGap: 10 }} horizontalAlign="center" verticalAlign="center" style={{ height: '80vh' }}>
-            <Text variant="xLargePlus">Good to See You here</Text>
-          </Stack>
-        </Stack>
+        <Box>
+          <Box>
+            <Typography color="inherit" variant="h5" component="h1">
+              Good to See You here</Typography>
+          </Box>
+        </Box>
       </MsalAuthenticationTemplate>
-    </Stack>
+    </Box>
   );
 };
 

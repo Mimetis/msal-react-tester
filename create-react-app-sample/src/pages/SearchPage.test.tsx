@@ -1,5 +1,3 @@
-import { initializeIcons } from '@fluentui/react';
-
 import { MsalProvider } from '@azure/msal-react';
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
@@ -9,8 +7,6 @@ import Layout from '../components/Layout';
 import { MsalReactTester } from 'msal-react-tester';
 
 import SearchPage from './SearchPage';
-initializeIcons();
-
 
 describe('Search page', () => {
 

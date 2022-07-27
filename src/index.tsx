@@ -1,4 +1,4 @@
 import MsalReactTester from "./MsalReactTester";
-import { GlobalOptions } from "./MsalReactTesterPlugin";
-export { MsalReactTester, GlobalOptions };
+import { MsalReactTesterPlugin } from "./MsalReactTesterPlugin";
+export { MsalReactTester, MsalReactTesterPlugin };
 

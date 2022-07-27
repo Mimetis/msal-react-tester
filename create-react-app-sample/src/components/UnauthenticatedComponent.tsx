@@ -1,13 +1,15 @@
-import { Stack, Text } from '@fluentui/react';
+import { Box, Typography } from '@mui/material';
 import * as React from 'react';
 
 interface IUnauthenticatedComponentProps { }
 
 const UnauthenticatedComponent: React.FunctionComponent<IUnauthenticatedComponentProps> = (props) => {
   return (
-    <Stack tokens={{ childrenGap: 10 }} horizontal horizontalAlign="center" verticalAlign="center" style={{ height: '80vh' }}>
-      <Text variant="xLargePlus">Please sign-in.</Text>
-    </Stack>
+    <Box>
+      <Typography color="inherit" variant="h5" component="h1">
+        Please sign-in.
+      </Typography>
+    </Box>
   );
 };
 

@@ -1,5 +1,9 @@
 import '@testing-library/jest-dom'
-import { GlobalOptions } from './msal-react-tester/index'
+import { MsalReactTesterPlugin } from 'msal-react-tester'
+import { vi, expect } from 'vitest'
 
-// console.log(GlobalOptions);
-GlobalOptions.TestRunner = 'jest';
+MsalReactTesterPlugin.init({
+  spyOn: vi.spyOn,
+  expect: expect,
+  resetAllMocks: vi.resetAllMocks
+})

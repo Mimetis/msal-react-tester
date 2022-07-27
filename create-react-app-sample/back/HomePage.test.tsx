@@ -1,18 +1,12 @@
-import { initializeIcons } from '@fluentui/react';
-
 // import { MsalProvider } from '@azure/msal-react';
 import { render, screen } from '@testing-library/react';
 import { MsalProvider } from '@azure/msal-react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
-import Layout from '../components/Layout';
-import HomePage from './HomePage';
+import Layout from '../src/components/Layout';
+import HomePage from '../src/pages/HomePage';
 
 import { MsalReactTester } from 'msal-react-tester';
-
-
-
-initializeIcons();
 
 
 describe('Home page', () => {

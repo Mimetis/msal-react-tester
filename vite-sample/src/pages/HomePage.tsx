@@ -1,6 +1,6 @@
 import { InteractionStatus } from '@azure/msal-browser';
 import { AuthenticatedTemplate, UnauthenticatedTemplate, useIsAuthenticated, useMsal } from '@azure/msal-react';
-import { Stack, Text } from '@fluentui/react';
+import { Box, Typography } from '@mui/material';
 import * as React from 'react';
 import { LoadingComponent } from '../components/LoadingComponent';
 import UnauthenticatedComponent from '../components/UnauthenticatedComponent';
@@ -18,19 +18,19 @@ const HomePage: React.FunctionComponent = (props) => {
   }
 
   return (
-    <Stack tokens={{ childrenGap: 20, padding: 10 }}>
+    <Box>
       <AuthenticatedTemplate>
-        <Stack tokens={{ childrenGap: 20, padding: 10 }} horizontalAlign="center" style={{ background: 'transparent' }}>
-          <Stack tokens={{ childrenGap: 10 }} horizontalAlign="center" verticalAlign="center" style={{ height: '80vh' }}>
-            <Text variant="xLargePlus">Good to See You here</Text>
-          </Stack>
-        </Stack>
+        <Box>
+          <Typography color="inherit" variant="h5" component="h1">
+            Good to See You here
+            </Typography>
+        </Box>
       </AuthenticatedTemplate>
 
       <UnauthenticatedTemplate>
         <UnauthenticatedComponent />
       </UnauthenticatedTemplate>
-    </Stack>
+    </Box>
   );
 };
 
