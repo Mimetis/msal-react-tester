@@ -1,5 +1,4 @@
 import { IPublicClientApplication, Logger, LogLevel, AccountInfo, EventCallbackFunction, AuthenticationResult, EventMessage, EventType, InteractionType, AuthError } from '@azure/msal-browser';
-import { waitFor } from '@testing-library/react';
 import { MsalReactTesterPlugin, ITestRunner } from './MsalReactTesterPlugin';
 import { defaultTestAccountInfo, defaultTestAuthenticationResult, defaultTestAuthError, } from './testerConstants';
 /**
@@ -106,30 +105,30 @@ class MsalReactTester {
    * Wait for login process to be done
    */
   async waitForLogin() {
-    await waitFor(() => this._testRunner.expect(this._handleRedirectSpy).toHaveBeenCalledTimes(1));
+    await this._testRunner.waitingFor(() => this._testRunner.expect(this._handleRedirectSpy).toHaveBeenCalledTimes(1));
     if (this.interationType === 'Redirect')
-      await waitFor(() => this._testRunner.expect(this._loginRedirectSpy).toHaveBeenCalledTimes(1));
+      await this._testRunner.waitingFor(() => this._testRunner.expect(this._loginRedirectSpy).toHaveBeenCalledTimes(1));
     else
-      await waitFor(() => this._testRunner.expect(this._loginPopupSpy).toHaveBeenCalledTimes(1));
+      await this._testRunner.waitingFor(() => this._testRunner.expect(this._loginPopupSpy).toHaveBeenCalledTimes(1));
   }
 
   /**
    * Wait for redirect handled by MSAL to be done
    */
   async waitForRedirect() {
-    await waitFor(() => this._testRunner.expect(this._handleRedirectSpy).toHaveBeenCalledTimes(1));
+    await this._testRunner.waitingFor(() => this._testRunner.expect(this._handleRedirectSpy).toHaveBeenCalledTimes(1));
   }
 
   /**
    * Wait for logout process to be done
    */
   async waitForLogout() {
-    await waitFor(() => this._testRunner.expect(this._handleRedirectSpy).toHaveBeenCalledTimes(1));
+    await this._testRunner.waitingFor(() => this._testRunner.expect(this._handleRedirectSpy).toHaveBeenCalledTimes(1));
 
     if (this.interationType === 'Redirect')
-      await waitFor(() => this._testRunner.expect(this._logoutRedirectSpy).toHaveBeenCalledTimes(1));
+      await this._testRunner.waitingFor(() => this._testRunner.expect(this._logoutRedirectSpy).toHaveBeenCalledTimes(1));
     else
-      await waitFor(() => this._testRunner.expect(this._logoutPopupSpy).toHaveBeenCalledTimes(1));
+      await this._testRunner.waitingFor(() => this._testRunner.expect(this._logoutPopupSpy).toHaveBeenCalledTimes(1));
   }
 
   /**
