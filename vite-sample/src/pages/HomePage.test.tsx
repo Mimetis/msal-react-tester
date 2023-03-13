@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import { MsalProvider } from '@azure/msal-react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
@@ -6,6 +6,12 @@ import Layout from '../components/Layout';
 import HomePage from './HomePage';
 
 import { MsalReactTester } from 'msal-react-tester';
+
+
+const actAwait = async (interval?: number): Promise<void> => {
+  let awaiter = (interval?: number): Promise<void> => new Promise((r, s) => setTimeout(r, interval));
+  return act(async () => await awaiter(interval));
+}
 
 
 describe('Home page', () => {
@@ -35,7 +41,7 @@ describe('Home page', () => {
         </MemoryRouter>
       </MsalProvider>,
     );
-
+    await actAwait(100);
     await msalTester.waitForRedirect();
     expect(screen.getByText(/Please sign-in/)).toBeInTheDocument();
   });
@@ -54,6 +60,7 @@ describe('Home page', () => {
       </MsalProvider>,
     );
 
+    await actAwait(100);
     await msalTester.waitForRedirect();
 
     let allLoggedInButtons = await screen.findAllByRole('button', { name: `${msalTester.activeAccount.name}` });
@@ -74,6 +81,7 @@ describe('Home page', () => {
       </MsalProvider>,
     );
 
+    await actAwait(100);
     await msalTester.waitForRedirect();
 
     let signin = screen.getByRole('button', { name: 'Sign In - Redirect' });
@@ -103,6 +111,7 @@ describe('Home page', () => {
       </MsalProvider>,
     );
 
+    await actAwait(100);
     await msalPopupTester.waitForRedirect();
 
     let signin = screen.getByRole('button', { name: 'Sign In - Popup' });
@@ -128,6 +137,7 @@ describe('Home page', () => {
       </MsalProvider >,
     );
 
+    await actAwait(100);
     await msalTester.waitForRedirect();
 
     let allLoggedInButtons = await screen.findAllByRole('button', { name: `${msalTester.activeAccount.name}` });
@@ -140,6 +150,7 @@ describe('Home page', () => {
     userEvent.click(signout, undefined, { skipPointerEventsCheck: true });
 
     // wait for logout
+    await actAwait(100);
     await msalTester.waitForLogout();
 
     expect(screen.getByText(/Please sign-in/)).toBeInTheDocument();
@@ -161,6 +172,7 @@ describe('Home page', () => {
 
     msalTester.generateFailure();
 
+    await actAwait(100);
     await msalTester.waitForRedirect();
 
     let signin = screen.getByRole('button', { name: 'Sign In - Redirect' });
