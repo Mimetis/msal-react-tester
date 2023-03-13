@@ -20,7 +20,7 @@
   },
   "peerDependencies": {
     "@azure/msal-react": "^1.4.4",
-    "@testing-library/react": "^13.3.0"
+    "@testing-library/react": "^14.0.0"
   },
   "devDependencies": {
     "rollup": "^2.77.2",
