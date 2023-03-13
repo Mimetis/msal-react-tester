@@ -19,7 +19,7 @@
     "start": "rollup -c -w"
   },
   "peerDependencies": {
-    "@azure/msal-react": "^1.4.4",
+    "@azure/msal-react": "^1.5.4",
     "@testing-library/react": "^14.0.0"
   },
   "devDependencies": {
