@@ -85,8 +85,8 @@ afterEach(() => {
 ### Testing a component without any interaction with the authentication process:
 
 In each of your test, you can now:
-- Mock an unauthenticated user, calling `msalTester.isNotLogged()`.
-- Mock an authenticated user, calling `msalTester.isLogged()`.
+- Mock an unauthenticated user, calling `await msalTester.isNotLogged()`.
+- Mock an authenticated user, calling `await msalTester.isLogged()`.
 - Creates a `<MsalProvider />` using the `msalTester.client` as the `IPublicClientApplication` instance.
 - Call `msalTester.waitForRedirect()` to let **MSAL React Tester** handling **MSAL React** processes
 - Then makes any tests or assertions.
@@ -97,7 +97,7 @@ Here is an example where we are testing a `<HomePage />` component during a firs
 test('Home page render correctly when user is not logged', async () => {
 
   // Mock a guest user, not yet authenticated:
-  msalTester.isNotLogged();
+  await msalTester.isNotLogged();
 
   // Render the <HomePage /> component using a <MsalProvider /> 
   // with the mock IPublicClientApplication instance:
@@ -120,17 +120,17 @@ test('Home page render correctly when user is not logged', async () => {
 
 ```
 
-On the other side, you can test the same component assuming your user is "_already logged_", using `msalTester.isLogged()`.
+On the other side, you can test the same component assuming your user is "_already logged_", using `await msalTester.isLogged()`.
 
 ### Testing a component during an authentication process:
 
-If you want to test a component during the authentication process, you can use `msalTester.waitForLogin()`:
+If you want to test a component during the authentication process, you can use `await msalTester.waitForLogin()`:
 
 ``` ts
 test('Home page render correctly when user logs in', async () => {
 
   // Mock a guest user, not yet authenticated:
-  msalTester.isNotLogged();
+  await msalTester.isNotLogged();
 
   // Render the <HomePage /> component using a <MsalProvider /> 
   // with the mock IPublicClientApplication instance:

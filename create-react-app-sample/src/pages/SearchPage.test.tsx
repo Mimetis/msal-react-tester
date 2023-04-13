@@ -26,7 +26,7 @@ describe('Search page', () => {
 
   test('Search page render correctly when user is logged in', async () => {
 
-    msalTester.isLogged();
+    await msalTester.isLogged();
 
     render(
       <MsalProvider instance={msalTester.client}>
@@ -46,7 +46,7 @@ describe('Search page', () => {
 
   test('Search page render correctly when user logs in automaticaly', async () => {
 
-    msalTester.isNotLogged();
+    await msalTester.isNotLogged();
 
     render(
       <MsalProvider instance={msalTester.client}>
@@ -66,7 +66,7 @@ describe('Search page', () => {
 
   test('Search page render correctly when error is raised', async () => {
 
-    msalTester.isNotLogged();
+    await msalTester.isNotLogged();
     msalTester.generateFailure();
 
     render(

@@ -7,12 +7,10 @@ import HomePage from './HomePage';
 
 import { MsalReactTester } from 'msal-react-tester';
 
-
 const actAwait = async (interval?: number): Promise<void> => {
   let awaiter = (interval?: number): Promise<void> => new Promise((r, s) => setTimeout(r, interval));
   return act(async () => await awaiter(interval));
 }
-
 
 describe('Home page', () => {
 
@@ -31,7 +29,7 @@ describe('Home page', () => {
 
   test('Home page render correctly when user is logged out', async () => {
 
-    msalTester.isNotLogged();
+    await msalTester.isNotLogged();
     render(
       <MsalProvider instance={msalTester.client}>
         <MemoryRouter>
@@ -41,14 +39,14 @@ describe('Home page', () => {
         </MemoryRouter>
       </MsalProvider>,
     );
-    await actAwait(100);
+    // await actAwait(100);
     await msalTester.waitForRedirect();
     expect(screen.getByText(/Please sign-in/)).toBeInTheDocument();
   });
 
   test('Home page render correctly when user is logged in', async () => {
 
-    msalTester.isLogged();
+    await msalTester.isLogged();
 
     render(
       <MsalProvider instance={msalTester.client}>
@@ -60,7 +58,7 @@ describe('Home page', () => {
       </MsalProvider>,
     );
 
-    await actAwait(100);
+    // await actAwait(100);
     await msalTester.waitForRedirect();
 
     let allLoggedInButtons = await screen.findAllByRole('button', { name: `${msalTester.activeAccount.name}` });
@@ -69,7 +67,7 @@ describe('Home page', () => {
 
   test('Home page render correctly when user logs in using redirect', async () => {
 
-    msalTester.isNotLogged();
+    await msalTester.isNotLogged();
 
     render(
       <MsalProvider instance={msalTester.client}>
@@ -81,10 +79,10 @@ describe('Home page', () => {
       </MsalProvider>,
     );
 
-    await actAwait(100);
+    // await actAwait(100);
     await msalTester.waitForRedirect();
 
-    let signin = screen.getByRole('button', { name: 'Sign In - Redirect' });
+    let signin = await screen.findByRole('button', { name: 'Sign In - Redirect' });
     userEvent.click(signin);
 
     await msalTester.waitForLogin();
@@ -99,7 +97,7 @@ describe('Home page', () => {
     let msalPopupTester = new MsalReactTester("Popup");
     msalPopupTester.spyMsal();
 
-    msalPopupTester.isNotLogged();
+    await msalPopupTester.isNotLogged();
 
     render(
       <MsalProvider instance={msalPopupTester.client}>
@@ -111,10 +109,10 @@ describe('Home page', () => {
       </MsalProvider>,
     );
 
-    await actAwait(100);
+    // await actAwait(100);
     await msalPopupTester.waitForRedirect();
 
-    let signin = screen.getByRole('button', { name: 'Sign In - Popup' });
+    let signin = await screen.findByRole('button', { name: 'Sign In - Popup' });
     userEvent.click(signin);
 
     await msalPopupTester.waitForLogin();
@@ -126,6 +124,7 @@ describe('Home page', () => {
   test('Home page render correctly when user logs out', async () => {
 
     msalTester.isLogged();
+    const user = userEvent.setup()
 
     render(
       <MsalProvider instance={msalTester.client}>
@@ -137,20 +136,20 @@ describe('Home page', () => {
       </MsalProvider >,
     );
 
-    await actAwait(100);
+    // await actAwait(100);
     await msalTester.waitForRedirect();
 
     let allLoggedInButtons = await screen.findAllByRole('button', { name: `${msalTester.activeAccount.name}` });
-    userEvent.click(allLoggedInButtons[0]);
+    user.click(allLoggedInButtons[0]);
 
     // once clicked on user name, menuitem is appearing
-    const signout = screen.getByRole('menuitem', { name: 'Log out - Redirect' });
+    const signout = await screen.findByRole('menuitem', { name: 'Log out - Redirect' });
 
     // click on logout
-    userEvent.click(signout, undefined, { skipPointerEventsCheck: true });
+    user.click(signout);
 
     // wait for logout
-    await actAwait(100);
+    // await actAwait(100);
     await msalTester.waitForLogout();
 
     expect(screen.getByText(/Please sign-in/)).toBeInTheDocument();
@@ -158,7 +157,7 @@ describe('Home page', () => {
 
   test('Home page render correctly when error is raised', async () => {
 
-    msalTester.isNotLogged();
+    await msalTester.isNotLogged();
 
     render(
       <MsalProvider instance={msalTester.client}>
@@ -172,10 +171,10 @@ describe('Home page', () => {
 
     msalTester.generateFailure();
 
-    await actAwait(100);
+    // await actAwait(100);
     await msalTester.waitForRedirect();
 
-    let signin = screen.getByRole('button', { name: 'Sign In - Redirect' });
+    let signin = await screen.findByRole('button', { name: 'Sign In - Redirect' });
     userEvent.click(signin);
 
     await msalTester.waitForLogin();

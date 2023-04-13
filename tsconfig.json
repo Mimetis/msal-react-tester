@@ -13,8 +13,7 @@
     "noImplicitReturns": true,
     "noImplicitThis": true,
     "noImplicitAny": false,
-    "strictNullChecks": false,
-    "suppressImplicitAnyIndexErrors": true
+    "strictNullChecks": false
   },
   "include": ["src"],
   "exclude": ["node_modules", "dist", "vite-sample", "create-react-app-sample", "rollup.config.js"]

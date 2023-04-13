@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import { MsalProvider } from '@azure/msal-react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
@@ -7,10 +7,10 @@ import HomePage from './HomePage';
 
 import { MsalReactTester } from 'msal-react-tester';
 
-
 describe('Home page', () => {
 
   let msalTester: MsalReactTester;
+
   beforeEach(() => {
     // new instance of msal tester for each test
     msalTester = new MsalReactTester();
@@ -25,7 +25,7 @@ describe('Home page', () => {
 
   test('Home page render correctly when user is logged out', async () => {
 
-    msalTester.isNotLogged();
+    await msalTester.isNotLogged();
     render(
       <MsalProvider instance={msalTester.client}>
         <MemoryRouter>
@@ -42,7 +42,7 @@ describe('Home page', () => {
 
   test('Home page render correctly when user is logged in', async () => {
 
-    msalTester.isLogged();
+    await msalTester.isLogged();
 
     render(
       <MsalProvider instance={msalTester.client}>
@@ -62,7 +62,7 @@ describe('Home page', () => {
 
   test('Home page render correctly when user logs in using redirect', async () => {
 
-    msalTester.isNotLogged();
+    await msalTester.isNotLogged();
 
     render(
       <MsalProvider instance={msalTester.client}>
@@ -76,7 +76,7 @@ describe('Home page', () => {
 
     await msalTester.waitForRedirect();
 
-    let signin = screen.getByRole('button', { name: 'Sign In - Redirect' });
+    let signin = await screen.findByRole('button', { name: 'Sign In - Redirect' });
     userEvent.click(signin);
 
     await msalTester.waitForLogin();
@@ -90,8 +90,8 @@ describe('Home page', () => {
     // Using a new msalTester with popup
     let msalPopupTester = new MsalReactTester("Popup");
     msalPopupTester.spyMsal();
-
-    msalPopupTester.isNotLogged();
+    await msalPopupTester.isNotLogged();
+    const user = userEvent.setup()
 
     render(
       <MsalProvider instance={msalPopupTester.client}>
@@ -103,10 +103,11 @@ describe('Home page', () => {
       </MsalProvider>,
     );
 
+    // await actAwait(1);
     await msalPopupTester.waitForRedirect();
 
-    let signin = screen.getByRole('button', { name: 'Sign In - Popup' });
-    userEvent.click(signin);
+    let signin = await screen.findByRole('button', { name: 'Sign In - Popup' });
+    await user.click(signin);
 
     await msalPopupTester.waitForLogin();
 
@@ -116,8 +117,8 @@ describe('Home page', () => {
 
   test('Home page render correctly when user logs out', async () => {
 
-    msalTester.isLogged();
-
+    await msalTester.isLogged();
+    const user = userEvent.setup()
     render(
       <MsalProvider instance={msalTester.client}>
         <MemoryRouter>
@@ -131,13 +132,13 @@ describe('Home page', () => {
     await msalTester.waitForRedirect();
 
     let allLoggedInButtons = await screen.findAllByRole('button', { name: `${msalTester.activeAccount.name}` });
-    userEvent.click(allLoggedInButtons[0]);
+    await user.click(allLoggedInButtons[0]);
 
     // once clicked on user name, menuitem is appearing
-    const signout = screen.getByRole('menuitem', { name: 'Log out - Redirect' });
+    const signout = await screen.findByRole('menuitem', { name: 'Log out - Redirect' });
 
     // click on logout
-    userEvent.click(signout, undefined, { skipPointerEventsCheck: true });
+    await user.click(signout);
 
     // wait for logout
     await msalTester.waitForLogout();
@@ -147,7 +148,7 @@ describe('Home page', () => {
 
   test('Home page render correctly when error is raised', async () => {
 
-    msalTester.isNotLogged();
+    await msalTester.isNotLogged();
 
     render(
       <MsalProvider instance={msalTester.client}>
@@ -163,7 +164,7 @@ describe('Home page', () => {
 
     await msalTester.waitForRedirect();
 
-    let signin = screen.getByRole('button', { name: 'Sign In - Redirect' });
+    let signin = await screen.findByRole('button', { name: 'Sign In - Redirect' });
     userEvent.click(signin);
 
     await msalTester.waitForLogin();

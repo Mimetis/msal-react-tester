@@ -18,7 +18,7 @@ import { defaultTestAccountInfo, defaultTestAuthenticationResult, defaultTestAut
   });
 
   test('Home page render correctly when user is not logged', async () => {
-	msalTester.isNotLogged();
+	await msalTester.isNotLogged();
 	render(
 	  <MsalProvider instance={msalTester.client}>
 		<MemoryRouter>
@@ -69,21 +69,36 @@ class MsalReactTester {
 		this.client = MsalReactTester.GetNewClient(testAccountInfo, testAuthenticationResult)
 	}
 
+	async actAwait(interval?: number): Promise<void>
+	{
+		let awaiter = (interval?: number): Promise<void> => new Promise((r, s) => setTimeout(r, interval));
+		await awaiter(interval);
+	}
+
+
 	/**
 	 * Initialize the IPublicClientApplication with an active account.
 	 */
-	isLogged() {
+	async isLogged() {
 		this.accounts = [this._testAccountInfo];
 		this.activeAccount = this._testAccountInfo;
+		// ensuring that render (that should come right after) will not be too fast
+		// and raise an error with act() => ....
+		await this.actAwait(1);
+
 	}
 
 	/**
 	 * Initialize the IPublicClientApplication with no active account
 	 */
-	isNotLogged() {
+	async isNotLogged() {
 
 		this.accounts = [];
 		this.activeAccount = null;
+		// ensuring that render (that should come right after) will not be too fast
+		// and raise an error with act() => ....
+		await this.actAwait(1);
+
 	}
 
 	/**

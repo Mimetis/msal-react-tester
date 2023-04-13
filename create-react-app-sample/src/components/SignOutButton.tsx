@@ -28,12 +28,16 @@ export const SignOutButton: React.FunctionComponent<ISignOutProps> = (props) => 
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () => {
+  const handleOnLogout = () => {
     setAnchorEl(null);
     if (props.loginType === "Popup")
       instance.logoutPopup();
     else
       instance.logoutRedirect();
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
   };
 
 
@@ -53,7 +57,7 @@ export const SignOutButton: React.FunctionComponent<ISignOutProps> = (props) => 
           'aria-labelledby': 'basic-button',
         }}
       >
-        <MenuItem onClick={handleClose}>Log out - {props.loginType}</MenuItem>
+        <MenuItem onClick={handleOnLogout}>Log out - {props.loginType}</MenuItem>
       </Menu>
     </>
 
