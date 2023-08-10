@@ -1,4 +1,7 @@
-import { IPublicClientApplication, Logger, LogLevel, AccountInfo, EventCallbackFunction, AuthenticationResult, EventMessage, EventType, InteractionType, AuthError } from '@azure/msal-browser';
+import {
+	IPublicClientApplication, Logger, LogLevel, AccountInfo, EventCallbackFunction,
+	AuthenticationResult, EventMessage, EventType, InteractionType, AuthError
+} from '@azure/msal-browser';
 import { MsalReactTesterPlugin, ITestRunner } from './MsalReactTesterPlugin';
 import { defaultTestAccountInfo, defaultTestAuthenticationResult, defaultTestAuthError, } from './testerConstants';
 /**
@@ -372,6 +375,7 @@ class MsalReactTester {
 			setNavigationClient: () => { return },
 			getLogger: () => logger,
 			getConfiguration: () => null,
+			hydrateCache: (...params:any) => Promise.resolve(),
 		};
 	};
 

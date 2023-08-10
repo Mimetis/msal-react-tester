@@ -1,10 +1,17 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "es2020",
+    "module": "es2020",
     "lib": [
+      "es6",
       "dom",
       "dom.iterable",
-      "esnext"
+      "es2020",
+      "es2020.promise"
+    ],
+    "types": [
+      "node",
+      "jest"
     ],
     "allowJs": true,
     "skipLibCheck": true,
@@ -14,7 +21,6 @@
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
-    "module": "esnext",
     "moduleResolution": "node",
     "strictNullChecks": false,
     "resolveJsonModule": true,
@@ -23,5 +29,9 @@
     "jsx": "react-jsx"
   },
   "include": [
-    "src"]
+    "src"
+  ],
+  "exclude": [
+    "node_modules",
+  ]
 }
