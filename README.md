@@ -43,7 +43,8 @@ import { vi, expect } from 'vitest'
 MsalReactTesterPlugin.init({
   spyOn: vi.spyOn,
   expect: expect,
-  resetAllMocks: vi.resetAllMocks
+  resetAllMocks: vi.resetAllMocks,
+  waitingFor: waitFor
 })
 ```
 
