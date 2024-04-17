@@ -38,6 +38,7 @@ npm install --save-dev msal-react-tester
 
  ``` ts
 import { MsalReactTesterPlugin } from 'msal-react-tester'
+import { waitFor } from "@testing-library/react";
 import { vi, expect } from 'vitest'
 
 MsalReactTesterPlugin.init({
